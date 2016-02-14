@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
+  skip_before_filter :ensure_correct_media_type
+  skip_before_filter :restrict_access
   def create
-    ap params
-    person = Person.authenticate(params[:person][:email], params[:person][:password])
+    person = Person.authenticate(params[:user][:email], params[:user][:password])
     data = {
       token: person.authentication_token,
       email: person.email
