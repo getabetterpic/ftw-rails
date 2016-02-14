@@ -1,9 +1,9 @@
 class Person < ActiveRecord::Base
   has_secure_password
   before_create :ensure_authentication_token
-  validates :email, uniqueness: true, case_sensitive: false, presence: true
+  validates :email, uniqueness: true, presence: true
   has_many :accounts
-  before_save :downcase_email
+  before_validation :downcase_email
 
   def downcase_email
     self.email = email.downcase if email.present?
