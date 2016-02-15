@@ -1,6 +1,7 @@
 class AccountResource < JSONAPI::Resource
   attribute :description
-  attribute :posted_balance
+  attribute :current_balance
+  attribute :available_balance
   has_many :transactions
 
   def self.records(options = {})

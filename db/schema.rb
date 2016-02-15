@@ -11,17 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160213182337) do
+ActiveRecord::Schema.define(version: 20160215203507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "description"
-    t.decimal  "posted_balance", precision: 14, scale: 4
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.decimal  "posted_balance",     precision: 14, scale: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "person_id"
+    t.string   "username"
+    t.string   "bank_code"
+    t.string   "plaid_access_token"
+    t.decimal  "available_balance",  precision: 14, scale: 4
+    t.decimal  "current_balance",    precision: 14, scale: 4
   end
 
   add_index "accounts", ["person_id"], name: "index_accounts_on_person_id", using: :btree

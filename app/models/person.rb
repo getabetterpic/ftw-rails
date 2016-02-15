@@ -23,6 +23,20 @@ class Person < ActiveRecord::Base
     person
   end
 
+  def create_accounts(plaid_accounts, plaid_access_token)
+    return [] unless plaid_accounts.present?
+    plaid_accounts.each do |account|
+      self.accounts.create(
+        description: account.name,
+        current_balance: account.current_balance.to_d,
+        available_balance: account.available_balance.to_d,
+        bank_code: account.institution_type,
+        plaid_access_token: plaid_access_token
+      )
+    end
+    return self.accounts
+  end
+
   private
 
   def generate_authentication_token
