@@ -14,6 +14,7 @@ gem 'awesome_print'
 gem 'pry'
 gem 'rack-cors', require: 'rack/cors'
 gem 'plaid', '~> 1.7.1'
+gem 'pry'
 
 
 # To use ActiveModel has_secure_password

@@ -3,7 +3,7 @@ class AccountResource < JSONAPI::Resource
   attribute :posted_balance
   has_many :transactions
 
-  def self.record(options = {})
+  def self.records(options = {})
     context = options[:context]
     context[:current_user].accounts
   end

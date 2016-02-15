@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   jsonapi_resources :accounts
   jsonapi_resources :transactions
+  jsonapi_resources :people
   post 'accounts/sync' => 'accounts#sync'
   post 'users/sign_in' => 'sessions#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
