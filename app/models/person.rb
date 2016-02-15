@@ -28,8 +28,8 @@ class Person < ActiveRecord::Base
     plaid_accounts.each do |account|
       self.accounts.create(
         description: account.name,
-        current_balance: account.current_balance.to_d,
-        available_balance: account.available_balance.to_d,
+        current_balance: account.current_balance,
+        available_balance: account.available_balance,
         bank_code: account.institution_type,
         plaid_access_token: plaid_access_token
       )
