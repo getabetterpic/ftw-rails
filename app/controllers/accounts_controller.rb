@@ -5,7 +5,8 @@ class AccountsController < ApplicationController
     bank_code = params[:bankCode]
     user = Plaid.add_user('auth', username, params[:password], bank_code)
     if user.api_res == 'success'
-      accounts = current_user.create_accounts(user.accounts, user.access_token)
+      accounts = Account.create_plaid_accounts(current_user, user.accounts, user.access_token)
+      transactions = Transaction.create_plaid_transactions(current_user, user.transactions)
       if accounts.present?
         render json: accounts, status: 200 and return
       else
@@ -27,5 +28,22 @@ class AccountsController < ApplicationController
       user.mfa_authentication(answer)
       render json: user, status: 201 and return
     end
+  end
+
+  def link
+    public_token = params[:public_token]
+    exchange_request = Plaid.exchange_token(public_token)
+    if private_token = exchange_request.access_token
+      begin
+        user = Plaid.set_user(private_token, ['connect'])
+      rescue Plaid::NotFound, Plaid::Unauthorized
+        user = Plaid.set_user(private_token, ['auth'])
+      end
+      accounts = Account.create_plaid_accounts(current_user, user.accounts, user.access_token)
+      if user.get('connect')
+        transactions = Transaction.create_plaid_transactions(current_user, user.transactions)
+      end
+    end
+    render json: {}, status: 201 and return
   end
 end

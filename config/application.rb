@@ -27,5 +27,7 @@ module FtwRails
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
+
+    config.filter_parameters += [:authentication_token]
   end
 end

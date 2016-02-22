@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160216013213) do
+ActiveRecord::Schema.define(version: 20160221225727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,9 +27,12 @@ ActiveRecord::Schema.define(version: 20160216013213) do
     t.string   "plaid_access_token"
     t.decimal  "available_balance",  precision: 14, scale: 4
     t.decimal  "current_balance",    precision: 14, scale: 4
+    t.string   "plaid_id"
   end
 
   add_index "accounts", ["person_id"], name: "index_accounts_on_person_id", using: :btree
+  add_index "accounts", ["plaid_access_token"], name: "index_accounts_on_plaid_access_token", using: :btree
+  add_index "accounts", ["plaid_id"], name: "index_accounts_on_plaid_id", unique: true, using: :btree
 
   create_table "institutions", force: :cascade do |t|
     t.string   "name"
@@ -48,15 +51,19 @@ ActiveRecord::Schema.define(version: 20160216013213) do
 
   create_table "transactions", force: :cascade do |t|
     t.string   "description"
-    t.decimal  "amount",          precision: 14, scale: 4
+    t.decimal  "amount",           precision: 14, scale: 4
     t.date     "authorized_date"
     t.date     "posted_date"
     t.integer  "account_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "plaid_account_id"
+    t.string   "plaid_id"
   end
 
   add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
+  add_index "transactions", ["plaid_account_id"], name: "index_transactions_on_plaid_account_id", using: :btree
+  add_index "transactions", ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true, using: :btree
 
   add_foreign_key "accounts", "people"
   add_foreign_key "transactions", "accounts"
