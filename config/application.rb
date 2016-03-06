@@ -28,6 +28,6 @@ module FtwRails
       end
     end
 
-    config.filter_parameters += [:authentication_token]
+    config.filter_parameters += [:authentication_token, :access_token, :plaid_access_token]
   end
 end

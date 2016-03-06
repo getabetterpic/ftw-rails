@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221225727) do
+ActiveRecord::Schema.define(version: 20160226171622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,17 +54,14 @@ ActiveRecord::Schema.define(version: 20160221225727) do
     t.decimal  "amount",           precision: 14, scale: 4
     t.date     "authorized_date"
     t.date     "posted_date"
-    t.integer  "account_id"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.string   "plaid_account_id"
     t.string   "plaid_id"
   end
 
-  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
   add_index "transactions", ["plaid_account_id"], name: "index_transactions_on_plaid_account_id", using: :btree
   add_index "transactions", ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true, using: :btree
 
   add_foreign_key "accounts", "people"
-  add_foreign_key "transactions", "accounts"
 end

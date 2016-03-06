@@ -1,4 +1,5 @@
 class Account < ActiveRecord::Base
+  # self.primary_key = 'plaid_id'
   has_many :transactions, foreign_key: :plaid_account_id, primary_key: :plaid_id, dependent: :destroy
   belongs_to :person
 
@@ -15,5 +16,20 @@ class Account < ActiveRecord::Base
       )
     end
     return person.accounts
+  end
+
+  def self.update_account_balances(person, plaid_accounts)
+    plaid_accounts.each do |account|
+      acct = person.accounts.where('plaid_id = ?', account.id).first
+      next unless acct
+      acct.current_balance = account.current_balance
+      acct.available_balance = account.available_balance
+      acct.save
+    end
+  end
+
+  def update_transactions
+    plaid_user = Plaid.set_user(plaid_access_token, ['connect'])
+    Transaction.create_plaid_transactions(person, plaid_user.transactions)
   end
 end
