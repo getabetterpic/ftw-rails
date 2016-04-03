@@ -32,4 +32,8 @@ class Account < ActiveRecord::Base
     plaid_user = Plaid.set_user(plaid_access_token, ['connect'])
     Transaction.create_plaid_transactions(person, plaid_user.transactions)
   end
+
+  def get_plaid_connect_user
+    Plaid.set_user(self.plaid_access_token, ['connect'])
+  end
 end

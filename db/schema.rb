@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226171622) do
+ActiveRecord::Schema.define(version: 20160306212400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "ltree"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "description"
@@ -34,6 +35,18 @@ ActiveRecord::Schema.define(version: 20160226171622) do
   add_index "accounts", ["plaid_access_token"], name: "index_accounts_on_plaid_access_token", using: :btree
   add_index "accounts", ["plaid_id"], name: "index_accounts_on_plaid_id", unique: true, using: :btree
 
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type"
+    t.integer  "parent_id"
+    t.ltree    "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "plaid_id"
+  end
+
+  add_index "categories", ["parent_id"], name: "index_categories_on_parent_id", using: :btree
+
   create_table "institutions", force: :cascade do |t|
     t.string   "name"
     t.string   "institution_type"
@@ -48,6 +61,16 @@ ActiveRecord::Schema.define(version: 20160226171622) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
+
+  create_table "transaction_categories", force: :cascade do |t|
+    t.integer  "transaction_id"
+    t.integer  "category_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "transaction_categories", ["category_id"], name: "index_transaction_categories_on_category_id", using: :btree
+  add_index "transaction_categories", ["transaction_id"], name: "index_transaction_categories_on_transaction_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
     t.string   "description"
@@ -64,4 +87,6 @@ ActiveRecord::Schema.define(version: 20160226171622) do
   add_index "transactions", ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true, using: :btree
 
   add_foreign_key "accounts", "people"
+  add_foreign_key "transaction_categories", "categories"
+  add_foreign_key "transaction_categories", "transactions"
 end

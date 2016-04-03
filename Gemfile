@@ -15,7 +15,8 @@ gem 'pry'
 gem 'rack-cors', require: 'rack/cors'
 gem 'plaid', '~> 1.7.1'
 gem 'httparty'
-
+gem 'ltree_hierarchy'
+gem 'thin'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
