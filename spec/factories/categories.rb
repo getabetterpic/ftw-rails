@@ -1,8 +1,13 @@
 FactoryGirl.define do
   factory :category do
-    name "MyString"
-    type ""
+    name "Transportation Centers"
+    type "place"
+    parent parent_category
+  end
+
+  factory :parent_category do
+    name "Travel"
+    type "place"
     parent nil
-    path ""
   end
 end
