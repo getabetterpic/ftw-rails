@@ -18,5 +18,6 @@ RSpec.describe Category, type: :model do
   it "creates the category without a parent if top level category" do
     result = Category.add_plaid_category(plaid_parent)
     expect(result.path.split('.').count).to eq(1)
+    expect(result.parent).to be_nil
   end
 end
