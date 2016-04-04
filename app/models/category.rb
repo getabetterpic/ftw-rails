@@ -14,15 +14,17 @@
       new_category.plaid_id = category.id
       new_category.type = category.type
       new_category.save
+      new_category
     else
       parent_name = category.hierarchy[-2]
       category_name = category.hierarchy[-1]
-      parent = Category.find_or_create_by(name: parent_name)
-      child = Category.find_or_create_by(name: category_name)
+      parent = Category.find_or_create_by(name: parent_name, type: category.type)
+      child = Category.find_or_create_by(name: category_name, type: category.type, parent: parent)
       child.plaid_id = category.id
       child.type = category.type
       child.parent = parent
       child.save
+      child
     end
   end
 end
