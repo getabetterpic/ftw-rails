@@ -38,3 +38,5 @@ group :test, :development do
   gem 'factory_girl_rails'
   gem 'ffaker'
 end
+
+gem 'simplecov', :require => false, :group => :test
